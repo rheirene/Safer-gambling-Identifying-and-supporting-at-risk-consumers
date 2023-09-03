@@ -1,0 +1,73 @@
+---
+title: "Unblinding script"
+author: "Rob Heirene"
+format: html
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+format: 
+  html:
+    toc: true
+    code-fold: true
+    code-summary: "Show code"
+    code-tools: true
+---
+
+## Preamble
+
+This is a early draft of this document.
+
+The purpose of this script will be to "unblind" analysis scripts used in our data analysis for a project with the overall title "Safer gambling: Identifying and supporting at-risk consumers". The OSF page for this project can be found [here](https://osf.io/5at3q/) (it's currently a private project as of the latest date this file was committed.).
+
+The preliminary plan is to use the {xfun} package ([guide](https://yihui.org/xfun/)) to change the anonymized group names after the actual allocations are revealed (e.g., intervention versus control group labels). The full details of this process will be included in our preregistration, which I'm currently drafting.
+
+::: {.callout-note appearance="minimal" icon="false"}
+## Important note
+
+Ensure all files have been committed and pushed to the Github repository before running this script in case of any errors. Running this script will modify the files in place and reverting changes across multiple files may become difficult.
+:::
+
+```{r}
+#| code-summary: "Setup code"
+
+install.packages('xfun', repos = 'https://yihui.r-universe.dev')
+
+library(xfun)
+
+```
+
+### Unblind manipulation 1 (question order)
+
+This relates to the study with the preregistered title:
+
+-   Accuracy of self-reported gambling behaviour: Replication & extension of Heirene, Wang, & Gainsbury (2021)
+
+```{r}
+#|ndefined code-summary: "Unblind manipulation 1 (question order)"
+gsub_file(filename_here, "groupXX", "spend_win_first", fixed = TRUE)
+
+gsub_file(filname_here, "groupXX", "spend_win_last", fixed = TRUE)
+
+# If files relating to this manipulation are all placed in a subdirectory, we will use the following code:
+
+gsub_dir(dir = folder_here, "groupXX", "spend_win_last", fixed = TRUE)
+
+gsub_dir(dir = folder_here, "groupXX", "spend_win_first", fixed = TRUE)
+```
+
+### Unblind manipulation 2 (intervention group)
+
+This relates to the study with the preregistered title:
+
+-   Impact of personalised feedback on problem gambling scores on online gambling behaviour
+
+```{r}
+#| code-summary: "Unblind manipulation 2 (intervention group)"
+gsub_file(filename_here, "groupXX", "personalised_feedback_group", fixed = TRUE)
+
+gsub_file(filename_here, "groupXX", "no_feedback_group", fixed = TRUE)
+
+# If files relating to this manipulation are all placed in a subdirectory, we will use the following code:
+
+gsub_dir(dir = folder_here, "groupXX", "personalised_feedback_group", fixed = TRUE)
+
+gsub_dir(dir = folder_here, "groupXX", "no_feedback_group", fixed = TRUE)
+```
