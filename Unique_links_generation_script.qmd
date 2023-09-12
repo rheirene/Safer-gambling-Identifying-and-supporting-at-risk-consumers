@@ -1,0 +1,61 @@
+---
+title: "Unique_links_generation_script"
+author: "Rob Heirene"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+format:
+  html:
+    toc: true
+    code-fold: true
+    code-summary: "Show code"
+    code-tools: true
+---
+
+## Preamble
+
+This is a early draft of this document.
+
+The purpose of this script is to assist in generating unique links for participants to complete a Qualtrics survey in our project with the overall title "Safer gambling: Identifying and supporting at-risk consumers". The OSF page for this project can be found [here](https://osf.io/5at3q/) (it's currently a private project as of the latest date this file was committed).
+
+It also includes some example code used to illustrate how we will create dummy email address for participants that we include in our preregistration.
+
+### load required packages
+
+```{r results = FALSE, message = FALSE}
+#| code-summary: "Setup code"
+
+library(tidyverse)
+library(gt)
+```
+
+### Illustrative code for preregistration
+
+The below code is purely for the purposes of illustrating how we will create email addresses for the customers provided by the online gambling operator that will be used in the contact list for Qualtrics to generate unique survey invitation links.
+
+```{r}
+# create dummy customer IDs:
+dataset <- tibble(CustomerID = c(2029030,
+230000,
+233289320))
+
+# append mail identifier for inclusion in Qualtrics "contact list":
+dataset %>% 
+  mutate(Email = paste0(CustomerID, "@gmail.com"))
+
+```
+
+We can also create some dummy links here to show how they may look once qualtrics has generated them along with the other variables in the dataset (this is meant to be an example and not representative of how the links will actually look):
+
+```{r}
+
+# Repeat process, adding unique link and tabling outcomes (thisis purely for demonstrative purposes in the preregistration and not how unique links are actually generated):
+dataset %>%
+  mutate(Email = paste0(CustomerID, "@gmail.com")) %>% 
+  mutate(unique_link = paste0("https:/", CustomerID, "/qualtrics_survey_university_of_sydney.com")) %>% 
+  gt()
+```
+
+### Code actually used to create dummy emails
+
+```{r}
+
+```

@@ -1,7 +1,6 @@
 ---
 title: "Unblinding script"
 author: "Rob Heirene"
-format: html
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 format: 
   html:
@@ -15,7 +14,7 @@ format:
 
 This is a early draft of this document.
 
-The purpose of this script will be to "unblind" analysis scripts used in our data analysis for a project with the overall title "Safer gambling: Identifying and supporting at-risk consumers". The OSF page for this project can be found [here](https://osf.io/5at3q/) (it's currently a private project as of the latest date this file was committed.).
+The purpose of this script will be to "unblind" analysis scripts used in our data analysis for a project with the overall title "Safer gambling: Identifying and supporting at-risk consumers". The OSF page for this project can be found [here](https://osf.io/5at3q/) (it's currently a private project as of the latest date this file was committed).
 
 The preliminary plan is to use the {xfun} package ([guide](https://yihui.org/xfun/)) to change the anonymized group names after the actual allocations are revealed (e.g., intervention versus control group labels). The full details of this process will be included in our preregistration, which I'm currently drafting.
 
@@ -28,7 +27,7 @@ Ensure all files have been committed and pushed to the Github repository before 
 ```{r}
 #| code-summary: "Setup code"
 
-install.packages('xfun', repos = 'https://yihui.r-universe.dev')
+# install.packages('xfun', repos = 'https://yihui.r-universe.dev')
 
 library(xfun)
 
@@ -41,7 +40,7 @@ This relates to the study with the preregistered title:
 -   Accuracy of self-reported gambling behaviour: Replication & extension of Heirene, Wang, & Gainsbury (2021)
 
 ```{r}
-#|ndefined code-summary: "Unblind manipulation 1 (question order)"
+#| code-summary: "Unblind manipulation 1 (question order)"
 gsub_file(filename_here, "groupXX", "spend_win_first", fixed = TRUE)
 
 gsub_file(filname_here, "groupXX", "spend_win_last", fixed = TRUE)
