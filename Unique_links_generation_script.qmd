@@ -1,5 +1,5 @@
 ---
-title: "Unique_links_generation_script"
+title: "Unique links generation script"
 author: "Rob Heirene"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 format:

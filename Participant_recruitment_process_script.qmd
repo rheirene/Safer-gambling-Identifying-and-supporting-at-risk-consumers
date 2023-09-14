@@ -1,0 +1,113 @@
+---
+title: "Participant recruitment process"
+author: "Rob Heirene"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+format:
+  html:
+    toc: true
+    code-fold: true
+    code-summary: "Show code"
+    code-tools: true
+---
+
+## Preamble
+
+This is a draft of this document.
+
+The purpose of this script is to assist in undertaking second rounds of recruitment in our project with the overall title "Safer gambling: Identifying and supporting at-risk consumers". The OSF page for this project can be found [here](https://osf.io/5at3q/) (it's currently a private project as of the latest date this file was committed). We plan to work with a online wagering operator who will send survey links to their customers in recruitment messages. If we do not achieve our ideal sample size of 1500 participants after the first round of messages are sent, we will undertake two further rounds of recruitment messaging.
+
+If our minimum sample size is not achieved after the first round of messages, we will need to inspect the survey data to identify customers who have already completed the survey and remove these from the recruitment sample. Also, if more than 1500 individuals started the survey, we will need to inspect the data to determine how many completed it up to the end of the PGSI questionnaire (we aim to recruit at least 1500 participants who complete the survey up to this point). 
+
+This document outlines the R code we will use to remove customers from the recruitment list who have already completed the survey and the code we will use to determine the number of participants who completed the survey at least end of the PGSI.
+
+### load required packages
+
+```{r results = FALSE, message = FALSE}
+#| code-summary: "Setup code"
+
+library(tidyverse)
+library(gt)
+```
+
+### Remove customers who completed the survey
+
+We will remove all participants who have opened the survey in the first round of recruitment from the recruitment list using the R code. Below we include some code that demonstrates how we will achieve this for illustrative purposes (it will be included in our preregistration).
+
+We first need to create a sham recruitment list:
+
+```{r}
+# create dummy customer IDs:
+recruitment_list_IDs <- tibble(CustomerID = c(2029030,
+230000,
+233289320,
+74598450,
+834893498))
+
+# Now use these dummy customer IDs to create anexample recruitment list:
+recruitment_list <- recruitment_list_IDs %>% 
+  mutate(Email = paste0(CustomerID, "@gmail.com")) %>% 
+  mutate(unique_link = paste0("https:/", CustomerID, "/qualtrics_survey_university_of_sydney.com")) %>%
+  print()
+```
+
+Now we can create a sham survey dataset:
+```{r}
+# now we can create the dummy survey data:
+# Will first have to create some participants complete responses to the PGSI:
+complete_participants <- tibble(
+  CustomerID = c(2029030, 233289320),
+  PGSI_1 = sample(0:3, 2, replace = TRUE),
+  PGSI_2 = sample(0:3, 2, replace = TRUE),
+  PGSI_3 = sample(0:3, 2, replace = TRUE),
+  PGSI_4 = sample(0:3, 2, replace = TRUE),
+  PGSI_5 = sample(0:3, 2, replace = TRUE),
+  PGSI_6 = sample(0:3, 2, replace = TRUE),
+  PGSI_7 = sample(0:3, 2, replace = TRUE),
+  PGSI_8 = sample(0:3, 2, replace = TRUE),
+  PGSI_9 = sample(0:3, 2, replace = TRUE),
+  first_Q_post_PGSI = sample(1:5, 2, replace = TRUE),
+)
+# now create a naughty participant who didn't complete the survey:
+incomplete_participant <- tibble(
+  CustomerID = 230000, 
+  PGSI_1 = sample(0:3, 1),
+  PGSI_2 = sample(0:3, 1),
+  PGSI_3 = sample(0:3, 1),
+  PGSI_4 = sample(0:3, 1),
+  PGSI_5 = sample(0:3, 1),
+  PGSI_6 = NA_integer_,
+  PGSI_7 = NA_integer_,
+  PGSI_8 = NA_integer_,
+  PGSI_9 = NA_integer_,
+  first_Q_post_PGSI = 4
+)
+
+# Bind datasets:
+survey_data <- bind_rows(complete_participants, incomplete_participant) %>% 
+  print()
+
+```
+
+Now specify the code to remove anyone who has started the survey:
+
+```{r}
+recruitment_list %>% 
+  anti_join(survey_data, by = join_by(CustomerID)) # remove anyone from the recruitment list who is present in the survey data
+
+```
+
+### Determine how many "complete" responses there are
+
+Now specify code for removing participants who did not complete the survey up to the point of the PGSI so that we can tell how many "complete" survey responses we have:
+
+```{r}
+# Filter out incomplete responses:
+complete_responses <- survey_data %>%
+  filter(complete.cases(PGSI_1, PGSI_2, PGSI_3, PGSI_4, PGSI_5, PGSI_6, PGSI_7, PGSI_8, PGSI_9)) %>% 
+  print()
+
+# Determine the exact number of complete responses:
+nrow(complete_responses)
+
+```
+
