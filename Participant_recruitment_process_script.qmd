@@ -14,7 +14,7 @@ format:
 
 This is a draft of this document.
 
-The purpose of this script is to assist in undertaking second rounds of recruitment in our project with the overall title "Safer gambling: Identifying and supporting at-risk consumers". The OSF page for this project can be found [here](https://osf.io/5at3q/) (it's currently a private project as of the latest date this file was committed). We plan to work with a online wagering operator who will send survey links to their customers in recruitment messages. If we do not achieve our ideal sample size of 1500 participants after the first round of messages are sent, we will undertake two further rounds of recruitment messaging.
+The purpose of this script is to assist in undertaking second rounds of recruitment in our project with the overall title "Safer gambling: Identifying and supporting at-risk consumers". The OSF page for this project can be found [here](https://osf.io/5at3q/) (it's currently a private project as of the latest date this file was committed). We plan to work with a online wagering operator who will send survey links to their customers in recruitment messages. If we do not achieve our ideal sample size of 1500 participants after the first round of messages are sent, we will undertake a further rounds of recruitment messaging.
 
 If our minimum sample size is not achieved after the first round of messages, we will need to inspect the survey data to identify customers who have already completed the survey and remove these from the recruitment sample. Also, if more than 1500 individuals started the survey, we will need to inspect the data to determine how many completed it up to the end of the PGSI questionnaire (we aim to recruit at least 1500 participants who complete the survey up to this point). 
 
@@ -31,7 +31,7 @@ library(gt)
 
 ### Remove customers who completed the survey
 
-We will remove all participants who have opened the survey in the first round of recruitment from the recruitment list using the R code. Below we include some code that demonstrates how we will achieve this for illustrative purposes (it will be included in our preregistration).
+We will remove all participants who have opened the survey in the first round of recruitment from the recruitment list using R code. Below we include some code that demonstrates how we will achieve this for illustrative purposes (it will be included in our preregistration).
 
 We first need to create a sham recruitment list:
 
@@ -43,7 +43,7 @@ recruitment_list_IDs <- tibble(CustomerID = c(2029030,
 74598450,
 834893498))
 
-# Now use these dummy customer IDs to create anexample recruitment list:
+# Now use these dummy customer IDs to create an example recruitment list:
 recruitment_list <- recruitment_list_IDs %>% 
   mutate(Email = paste0(CustomerID, "@gmail.com")) %>% 
   mutate(unique_link = paste0("https:/", CustomerID, "/qualtrics_survey_university_of_sydney.com")) %>%
@@ -79,7 +79,7 @@ incomplete_participant <- tibble(
   PGSI_7 = NA_integer_,
   PGSI_8 = NA_integer_,
   PGSI_9 = NA_integer_,
-  first_Q_post_PGSI = 4
+  first_Q_post_PGSI = NA_integer_
 )
 
 # Bind datasets:
