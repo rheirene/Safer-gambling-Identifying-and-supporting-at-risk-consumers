@@ -27,7 +27,7 @@ Ensure all files have been committed and pushed to the Github repository before 
 ```{r}
 #| code-summary: "Setup code"
 
-# install.packages('xfun', repos = 'https://yihui.r-universe.dev')
+install.packages('xfun', repos = 'https://yihui.r-universe.dev')
 
 library(xfun)
 
@@ -52,21 +52,3 @@ gsub_dir(dir = folder_here, "groupXX", "spend_win_last", fixed = TRUE)
 gsub_dir(dir = folder_here, "groupXX", "spend_win_first", fixed = TRUE)
 ```
 
-### Unblind manipulation 2 (intervention group)
-
-This relates to the study with the preregistered title:
-
--   Impact of personalised feedback on problem gambling scores on online gambling behaviour
-
-```{r}
-#| code-summary: "Unblind manipulation 2 (intervention group)"
-gsub_file(filename_here, "groupXX", "personalised_feedback_group", fixed = TRUE)
-
-gsub_file(filename_here, "groupXX", "no_feedback_group", fixed = TRUE)
-
-# If files relating to this manipulation are all placed in a subdirectory, we will use the following code:
-
-gsub_dir(dir = folder_here, "groupXX", "personalised_feedback_group", fixed = TRUE)
-
-gsub_dir(dir = folder_here, "groupXX", "no_feedback_group", fixed = TRUE)
-```
